@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CampusBites | LPU Food Delivery</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- Auth View -->
+    <div id="view-auth" class="auth-container">
+        <div class="auth-card glass">
+            <h1 id="auth-title">CampusBites</h1>
+            <div id="login-form">
+                <div class="input-group">
+                    <label>Registration Number</label>
+                    <input type="text" id="login-reg" placeholder="e.g. 1210XXXX">
+                </div>
+                <div class="input-group">
+                    <label>Password</label>
+                    <input type="password" id="login-pass" placeholder="••••••••">
+                </div>
+                <button onclick="auth.login()">Login</button>
+                <button class="btn-secondary" onclick="ui.toggleAuth(false)">Create Account</button>
+            </div>
+            <div id="register-form" class="hidden">
+                <div class="input-group">
+                    <label>Full Name</label>
+                    <input type="text" id="reg-name" placeholder="John Doe">
+                </div>
+                <div class="input-group">
+                    <label>Registration Number</label>
+                    <input type="text" id="reg-no" placeholder="1210XXXX">
+                </div>
+                <div class="input-group">
+                    <label>Hostel / Block</label>
+                    <input type="text" id="reg-hostel" placeholder="BH-1, GH-2, etc.">
+                </div>
+                <div class="input-group">
+                    <label>Phone Number</label>
+                    <input type="text" id="reg-phone" placeholder="9876543210">
+                </div>
+                <div class="input-group">
+                    <label>Role</label>
+                    <select id="reg-role">
+                        <option value="STUDENT">Student</option>
+                        <option value="ADMIN">Admin</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Password</label>
+                    <input type="password" id="reg-pass" placeholder="••••••••">
+                </div>
+                <button onclick="auth.register()">Register</button>
+                <button class="btn-secondary" onclick="ui.toggleAuth(true)">Back to Login</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Student Main View -->
+    <div id="view-student" class="hidden">
+        <nav class="glass">
+            <div class="logo">CampusBites</div>
+            <div class="nav-links">
+                <span id="user-display">Welcome, User</span>
+                <a href="#" onclick="ui.showView('student')">Browse</a>
+                <a href="#" onclick="ui.showOrders()">My Orders</a>
+                <a href="#" onclick="auth.logout()">Logout</a>
+            </div>
+        </nav>
+
+        <div class="container">
+            <div id="ai-suggestion" class="ai-hint hidden"></div>
+
+            <div id="restaurant-list" class="dashboard-grid">
+                <!-- Restaurants injected here -->
+            </div>
+
+            <div id="menu-view" class="hidden">
+                <button class="btn-secondary" onclick="ui.showView('student')" style="width: auto; padding: 10px 20px; margin-bottom: 20px;">← Back to Restaurants</button>
+                <h2 id="current-res-name">Menu</h2>
+                <div id="menu-list" class="dashboard-grid">
+                    <!-- Menu items injected here -->
+                </div>
+            </div>
+
+            <div id="orders-view" class="hidden">
+                <h2>Your Orders</h2>
+                <div id="user-orders-list" class="dashboard-grid">
+                    <!-- Orders injected here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin View -->
+    <div id="view-admin" class="hidden">
+        <nav class="glass">
+            <div class="logo">CampusBites Admin</div>
+            <div class="nav-links">
+                <a href="#" onclick="ui.loadAdminOrders()">🔄 Refresh</a>
+                <a href="#" onclick="auth.logout()">Logout</a>
+            </div>
+        </nav>
+        <div class="container">
+            <!-- Analytics Section -->
+            <div class="analytics-row">
+                <div class="glass stat-card">
+                    <span class="stat-icon">💰</span>
+                    <div class="stat-content">
+                        <p>Total Revenue</p>
+                        <h3 id="stat-revenue">₹0</h3>
+                    </div>
+                </div>
+                <div class="glass stat-card">
+                    <span class="stat-icon">📦</span>
+                    <div class="stat-content">
+                        <p>Total Orders</p>
+                        <h3 id="stat-orders">0</h3>
+                    </div>
+                </div>
+                <div class="glass stat-card">
+                    <span class="stat-icon">⭐</span>
+                    <div class="stat-content">
+                        <p>Active Joints</p>
+                        <h3 id="stat-joints">0</h3>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dashboard-grid">
+                <div class="glass card action-card" onclick="ui.openAddRestaurant()">
+                    <div class="card-icon">🏬</div>
+                    <div class="card-info">
+                        <h3>Add Food Joint</h3>
+                        <p>New campus restaurant</p>
+                    </div>
+                </div>
+                <div class="glass card action-card" onclick="ui.openAddMenu()">
+                    <div class="card-icon">🍕</div>
+                    <div class="card-info">
+                        <h3>Add Menu Item</h3>
+                        <p>New dish or drink</p>
+                    </div>
+                </div>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 40px; margin-bottom: 20px;">
+                <h2>Live Orders</h2>
+                <button class="btn-secondary" onclick="ui.loadAdminOrders()" style="width: auto; padding: 8px 15px;">🔄 Refresh List</button>
+            </div>
+            <div id="admin-orders-list" class="dashboard-grid">
+                <!-- Orders for admin -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Cart / Add Form -->
+    <div id="app-modal" class="modal">
+        <div class="modal-content glass">
+            <h3 id="modal-title">Modal Title</h3>
+            <div id="modal-body"></div>
+            <div style="display: flex; gap: 10px; margin-top: 20px;">
+                <button id="modal-action-btn">Action</button>
+                <button class="btn-secondary" onclick="ui.closeModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

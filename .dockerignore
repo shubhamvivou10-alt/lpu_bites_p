@@ -1,0 +1,4 @@
+bin/
+.git/
+*.bat
+.DS_Store
